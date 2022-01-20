@@ -13,9 +13,8 @@ server.on('connection', (client) => {
 
   client.setEncoding('utf8'); // interpret data as text
   client.on('data', (data) => {
-    console.log('File Requested: ', data)
-    const getData = getFile(data, client);
-
+    console.log('File Requested: ', data);
+    getFile(data, client);
   });
 });
 
@@ -23,12 +22,12 @@ const getFile = (dir, client) => {
   let result = {
     type: undefined,
     data: undefined,
-    name: dir.split('/')[dir.split('/').length-1].split('.')[0]
-  }
+    name: dir.split('/')[dir.split('/').length - 1].split('.')[0]
+  };
 
-  if(dir[0]==='.') dir = './source' + dir.slice(1);
+  if (dir[0] === '.') dir = './source' + dir.slice(1);
   else dir = './source/' + dir;
-  console.log(dir)
+  console.log(dir);
 
   fs.readFile(dir, 'utf8', (error, data) => {
     result.type = 'utf8';
@@ -36,4 +35,4 @@ const getFile = (dir, client) => {
     client.write('obj:' + JSON.stringify(result));
   });
 
-}
+};

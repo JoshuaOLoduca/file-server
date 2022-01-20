@@ -7,15 +7,15 @@ const handleUserInput = function(data, conn) {
   conn.write(data);
 };
 
-const setupInput = function(conn) {
+const promptForFile = function(conn) {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
   });
   rl.question("Dir of File: ", data =>{
-     handleUserInput(data, conn)
-     rl.close();
-    });
+    handleUserInput(data, conn);
+    rl.close();
+  });
 };
 
-module.exports = setupInput;
+module.exports = promptForFile;
