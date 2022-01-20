@@ -15,6 +15,7 @@ const connect = function() {
   // On connection complete, let use know its connected
   conn.on('connect', () => {
     console.log('Successfully connected to File server');
+    setupInput(conn);
   });
 
   // interpret incoming data as text
@@ -27,19 +28,19 @@ const connect = function() {
 const conn = connect();
 
 conn.on('data', data => downloadData(data));
-const stdin = setupInput(conn);
 
 const downloadData = data => {
   const types = {
     TXT: true
   }
+
   const type = data.split('').splice(0,3).join('');
-  console.log(type);
   const content = data.split('').slice(type.length + 1).join('');
+
   if (types[type]) {
-    fs.writeFile('./testing2.'+type, content, err => {
-      
+    fs.writeFile('./clientDL/'+'testing2.'+type, content, err => {
+      console.log('wrote File')
+      setupInput(conn);
     })
-    console.log('write file');
   }
 }

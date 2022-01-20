@@ -12,10 +12,10 @@ const setupInput = function(conn) {
     input: process.stdin,
     output: process.stdout
   });
-  const stdin = process.stdin;
-  rl.resume();
-  rl.question("Dir of File", data => handleUserInput(data, conn));
-  return stdin;
+  rl.question("Dir of File: ", data =>{
+     handleUserInput(data, conn)
+     rl.close();
+    });
 };
 
 module.exports = setupInput;

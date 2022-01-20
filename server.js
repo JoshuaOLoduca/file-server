@@ -26,6 +26,8 @@ const getFile = (dir, client) => {
   }
 
   fs.readFile(dir, 'utf8', (error, data) => {
+    result.type = 'utf8';
+    result.data = data;
     client.write('TXT:' + data);
   });
 
