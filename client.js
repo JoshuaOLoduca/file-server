@@ -1,6 +1,7 @@
 const net = require("net");
 const setupInput = require('./input');
 const fs = require('fs');
+const util = require('util')
 
 // const { IP, PORT, NAME } = require("./constants");
 
@@ -31,14 +32,22 @@ conn.on('data', data => downloadData(data));
 
 const downloadData = data => {
   const types = {
-    TXT: true
+    utf8: 'txt'
   }
+  let obj = {
+    type:'',
+    data: '',
+    name: ''
+  };
 
-  const type = data.split('').splice(0,3).join('');
-  const content = data.split('').slice(type.length + 1).join('');
+  if(data.includes('obj:')){
+    obj = JSON.parse(data.slice(4));
+  }
+  const extension = types[obj.type];
+  const content = obj.data;
 
-  if (types[type]) {
-    fs.writeFile('./clientDL/'+'testing2.'+type, content, err => {
+  if (extension !== undefined) {
+    fs.writeFile('./clientDL/'+obj.name+'.'+extension, content, err => {
       console.log('wrote File')
       setupInput(conn);
     })

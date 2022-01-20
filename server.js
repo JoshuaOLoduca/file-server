@@ -22,13 +22,18 @@ server.on('connection', (client) => {
 const getFile = (dir, client) => {
   let result = {
     type: undefined,
-    data: undefined
+    data: undefined,
+    name: dir.split('/')[dir.split('/').length-1].split('.')[0]
   }
+
+  if(dir[0]==='.') dir = './source' + dir.slice(1);
+  else dir = './source/' + dir;
+  console.log(dir)
 
   fs.readFile(dir, 'utf8', (error, data) => {
     result.type = 'utf8';
     result.data = data;
-    client.write('TXT:' + data);
+    client.write('obj:' + JSON.stringify(result));
   });
 
 }
